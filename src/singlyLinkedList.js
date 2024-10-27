@@ -42,6 +42,17 @@ class SinglyLinkedList {
     }
     return current;
   }
+
+  shift() {
+    if (!this.length) return undefined;
+    let currentHead = this.head;
+    this.head = currentHead.next;
+    this.length--;
+    if (!this.length) {
+      this.tail = null;
+    }
+    return currentHead;
+  }
 }
 
 let first = new SinglyLinkedList();
@@ -53,7 +64,5 @@ console.log(first);
 console.log(first.pop());
 console.log(first.push('Lily'));
 console.log(first.pop());
-console.log(first.pop());
-console.log(first.pop());
-console.log(first.pop());
+console.log(first.shift());
 console.log(first);
