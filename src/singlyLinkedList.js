@@ -24,6 +24,24 @@ class SinglyLinkedList {
     this.length++;
     return this;
   }
+
+  pop() {
+    if (!this.head || !this.length) return undefined;
+    let current = this.head;
+    let prev = current;
+    while (current.next) {
+      prev = current;
+      current = current.next;
+    }
+    this.tail = prev;
+    this.tail.next = null;
+    this.length--;
+    if (!this.length) {
+      this.head = null;
+      this.tail = null;
+    }
+    return current;
+  }
 }
 
 let first = new SinglyLinkedList();
@@ -31,4 +49,11 @@ first.push('Hi');
 first.push('there');
 first.push("I'm");
 first.push('John');
-console.log(first.head);
+console.log(first);
+console.log(first.pop());
+console.log(first.push('Lily'));
+console.log(first.pop());
+console.log(first.pop());
+console.log(first.pop());
+console.log(first.pop());
+console.log(first);
