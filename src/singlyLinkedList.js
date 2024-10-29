@@ -66,6 +66,26 @@ class SinglyLinkedList {
     this.length++;
     return this;
   }
+
+  get(index) {
+    if (index < 0 || index >= this.length) return null;
+    let count = 0;
+    let current = this.head;
+    while (count !== index) {
+      current = current.next;
+      count++;
+    }
+    return current;
+  }
+
+  set(index, value) {
+    const foundNode = this.get(index);
+    if (!foundNode) {
+      return false;
+    }
+    foundNode.val = value;
+    return true;
+  }
 }
 
 let first = new SinglyLinkedList();
@@ -75,7 +95,10 @@ first.push('John');
 console.log(first);
 console.log(first.pop());
 console.log(first.push('Lily'));
-console.log(first.pop());
+// console.log(first.pop());
 console.log(first.shift());
 console.log(first.unshift('Hello'));
+console.log(first.push(':)'));
+console.log(first.get(3));
+console.log(first.set(3, '=)))'));
 console.log(first);
