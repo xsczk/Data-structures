@@ -86,19 +86,39 @@ class SinglyLinkedList {
     foundNode.val = value;
     return true;
   }
+
+  insert(index, value) {
+    if (index < 0 || index > this.length) return false;
+    if (index === this.length) return !!this.push(value);
+    if (index === 0) return !!this.unshift(value);
+    const newNode = new Node(value);
+    const previous = this.get(index - 1);
+    const temp = previous.next;
+    previous.next = newNode;
+    newNode.next = temp;
+    this.length++;
+    return true;
+  }
+
+  remove(index) {
+    if (index < 0 || index >= this.length) return undefined;
+    if (index === this.length - 1) return this.pop();
+    if (index === 0) return this.shift();
+    const previous = this.get(index - 1);
+    const removed = previous.next;
+    previous.next = removed.next;
+    this.length--;
+    return removed;
+  }
 }
 
 let first = new SinglyLinkedList();
 first.push('Hi');
 first.push("I'm");
 first.push('John');
+first.push('Lily');
 console.log(first);
-console.log(first.pop());
-console.log(first.push('Lily'));
-// console.log(first.pop());
-console.log(first.shift());
-console.log(first.unshift('Hello'));
-console.log(first.push(':)'));
-console.log(first.get(3));
-console.log(first.set(3, '=)))'));
+first.insert(2, 'apple');
+first.insert(5, 'samsung');
+first.remove(0);
 console.log(first);
