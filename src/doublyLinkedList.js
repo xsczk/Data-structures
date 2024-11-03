@@ -1,6 +1,6 @@
 class Node {
-  constructor(value) {
-    this.value = value;
+  constructor(val) {
+    this.val = val;
     this.next = null;
     this.prev = null;
   }
@@ -13,8 +13,8 @@ class DoublyLinkedList {
     this.length = 0;
   }
 
-  push(value) {
-    let newNode = new Node(value);
+  push(val) {
+    let newNode = new Node(val);
     if (!this.length) {
       this.head = newNode;
       this.tail = this.head;
@@ -70,6 +70,36 @@ class DoublyLinkedList {
     this.length++;
     return this;
   }
+
+  get(idx) {
+    if (idx < 0 || idx >= this.length) return null;
+    let current, count;
+    if (idx <= this.length / 2) {
+      count = 0;
+      current = this.head;
+      while (count !== idx) {
+        current = current.next;
+        count++;
+      }
+    } else {
+      count = this.length - 1;
+      current = this.tail;
+      while (count !== idx) {
+        current = current.prev;
+        count--;
+      }
+    }
+    return current;
+  }
+
+  set(idx, val) {
+    const foundNode = this.get(idx);
+    if (!foundNode) {
+      return false;
+    }
+    foundNode.val = val;
+    return true;
+  }
 }
 
 // 1 -> 2 -> 3
@@ -78,10 +108,12 @@ class DoublyLinkedList {
 const first = new DoublyLinkedList();
 first.push('Hi');
 first.push("I'm");
-// first.push('John');
+first.push('John');
 // first.pop();
 // first.pop();
 // first.pop();
 first.shift();
 first.unshift('Hello');
-console.log(first.head);
+console.log(first.tail);
+first.set(2, 'Lilly');
+console.log(first.tail);
