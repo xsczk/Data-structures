@@ -100,6 +100,21 @@ class DoublyLinkedList {
     foundNode.val = val;
     return true;
   }
+
+  insert(idx, val) {
+    if (idx < 0 || idx > this.length) return false;
+    if (idx === 0) return !!this.unshift(val);
+    if (idx === this.length) return !!this.push(val);
+    const newNode = new Node(val);
+    const prev = this.get(idx - 1);
+    const temp = prev.next;
+    prev.next = newNode;
+    newNode.prev = prev;
+    newNode.next = temp;
+    temp.prev = newNode;
+    this.length++;
+    return true;
+  }
 }
 
 // 1 -> 2 -> 3
@@ -114,6 +129,6 @@ first.push('John');
 // first.pop();
 first.shift();
 first.unshift('Hello');
-console.log(first.tail);
 first.set(2, 'Lilly');
-console.log(first.tail);
+first.insert(0, 'apple');
+console.log(first);
