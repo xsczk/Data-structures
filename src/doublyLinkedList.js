@@ -115,6 +115,21 @@ class DoublyLinkedList {
     this.length++;
     return true;
   }
+
+  remove(idx) {
+    if (idx < 0 || idx >= this.length) return undefined;
+    if (idx === 0) return this.shift();
+    if (idx === this.length - 1) return this.pop(idx);
+    const foundNode = this.get(idx);
+    const nextNode = foundNode.next;
+    const prevNode = foundNode.prev;
+    prevNode.next = nextNode;
+    nextNode.prev = prevNode;
+    foundNode.next = null;
+    foundNode.prev = null;
+    this.length--;
+    return foundNode;
+  }
 }
 
 // 1 -> 2 -> 3
@@ -131,4 +146,6 @@ first.shift();
 first.unshift('Hello');
 first.set(2, 'Lilly');
 first.insert(0, 'apple');
-console.log(first);
+console.log(first.remove(3));
+first.remove(1);
+console.log(first.head);
