@@ -130,6 +130,27 @@ class DoublyLinkedList {
     this.length--;
     return foundNode;
   }
+
+  reverse() {
+    let currentNode = this.head;
+    this.head = this.tail;
+    this.tail = currentNode;
+    let nextNode;
+    let prevNode = null;
+    for (let i = 0; i < this.length; i++) {
+      nextNode = currentNode.next;
+      if (i === this.length - 1) {
+        currentNode.prev = null;
+      }
+      currentNode.next = prevNode;
+      if (prevNode) {
+        prevNode.prev = currentNode;
+      }
+      prevNode = currentNode;
+      currentNode = nextNode;
+    }
+    return this;
+  }
 }
 
 // 1 -> 2 -> 3
@@ -146,6 +167,17 @@ first.shift();
 first.unshift('Hello');
 first.set(2, 'Lilly');
 first.insert(0, 'apple');
-console.log(first.remove(3));
+// console.log(first.remove(3));
 first.remove(1);
-console.log(first.head);
+// console.log(first);
+
+const second = new DoublyLinkedList();
+// second.push(5);
+// second.push(10);
+// second.push(15);
+// second.push(20);
+// second.push(25);
+second.reverse();
+// 5 <-> 10 <-> 15 <-> 20 <-> 25
+// 25 <-> 20 <-> 15 <-> 10 <-> 5
+console.log(second);
