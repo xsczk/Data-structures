@@ -36,6 +36,39 @@ class BinarySearchTree {
       }
     }
   }
+
+  find(val) {
+    if (!this.root) return false;
+    let currentNode = this.root;
+    while (true) {
+      if (currentNode.val === val) return currentNode;
+      if (currentNode.val > val) {
+        if (!currentNode.left) return false;
+        currentNode = currentNode.left;
+      } else {
+        if (!currentNode.right) return false;
+        currentNode = currentNode.right;
+      }
+    }
+  }
+
+  //   Other approach
+  search(val) {
+    if (!this.root) return false;
+    let currentNode = this.root;
+    let found = false;
+    while (currentNode && !found) {
+      if (currentNode.val > val) {
+        currentNode = currentNode.left;
+      } else if (currentNode.val < val) {
+        currentNode = currentNode.right;
+      } else {
+        found = true;
+      }
+    }
+    if (!found) return false;
+    return currentNode;
+  }
 }
 
 const tree = new BinarySearchTree();
@@ -49,7 +82,8 @@ tree.insert(25);
 tree.insert(50);
 tree.insert(100);
 
-console.log(tree);
+console.log(tree.find(26));
+console.log(tree.search(75));
 
 // expected output:
 //               90
