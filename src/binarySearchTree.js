@@ -98,6 +98,34 @@ class BinarySearchTree {
     traverse(this.root);
     return data;
   }
+
+  //   Depth first search - Post order
+  DFSPostOrder() {
+    let data = [];
+
+    function traverse(node) {
+      if (node.left) traverse(node.left);
+      if (node.right) traverse(node.right);
+      data.push(node.val);
+    }
+
+    traverse(this.root);
+    return data;
+  }
+
+  //   Depth first search - In order
+  DFSInOrder() {
+    let data = [];
+
+    function traverse(node) {
+      if (node.left) traverse(node.left);
+      data.push(node.val);
+      if (node.right) traverse(node.right);
+    }
+
+    traverse(this.root);
+    return data;
+  }
 }
 
 const tree = new BinarySearchTree();
@@ -118,6 +146,9 @@ console.log(tree.BFS());
 
 console.log(tree.DFSPreOrder());
 // expected output: [90, 75, 60, 25, 50, 82, 110, 100, 130]
+
+console.log(tree.DFSPostOrder());
+// expected output: [50, 25, 60, 82, 75, 100, 130, 110, 90]
 
 // expected output:
 //               90
