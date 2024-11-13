@@ -150,6 +150,9 @@ console.log(tree.DFSPreOrder());
 console.log(tree.DFSPostOrder());
 // expected output: [50, 25, 60, 82, 75, 100, 130, 110, 90]
 
+console.log(tree.DFSInOrder());
+// expected output: [25, 50, 60, 75, 82, 90, 100, 110, 130]
+
 // expected output:
 //               90
 //         75         110
