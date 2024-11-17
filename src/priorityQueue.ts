@@ -8,6 +8,15 @@ class QueueNode {
   }
 }
 
+/**
+ * @description Priority Queue data structure based on min-binary heap
+ * @constructor PriorityQueue
+ * @param values an array contain priority nodes
+ * @method enqueue adds a priority node to the queue and fixes its position
+ * based on priority property
+ * @method dequeue removes the highest priority level out of the queue
+ * and re-arrange the remaining priority nodes
+ */
 class PriorityQueue {
   values: QueueNode[];
 
@@ -50,7 +59,7 @@ class PriorityQueue {
     const bubbleNode = this.values[0];
     while (true) {
       const leftNodeIdx = currIdx * 2 + 1;
-      const rightNodeIdx = currIdx + 1;
+      const rightNodeIdx = leftNodeIdx + 1;
       let leftChildNode: QueueNode | undefined,
         rightChildNode: typeof leftChildNode;
       let swap = null;
@@ -89,5 +98,4 @@ console.log(ER.dequeue());
 console.log(ER.dequeue());
 console.log(ER.dequeue());
 console.log(ER.dequeue());
-
 console.log(ER.dequeue());
