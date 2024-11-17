@@ -48,7 +48,7 @@ class PriorityQueue {
     const end = this.values.pop();
     if (this.values.length > 0) {
       this.values[0] = end;
-      this.sinkDown();
+      this.sinkDownRecursively();
     }
     return min;
   }
@@ -82,6 +82,39 @@ class PriorityQueue {
       this.values[currIdx] = this.values[swap];
       this.values[swap] = bubbleNode;
       currIdx = swap;
+    }
+  }
+
+  sinkDownRecursively(currIndex = 0) {
+    const len = this.values.length;
+    const bubbledNode = this.values[currIndex];
+    const leftChildNodeIdx = currIndex * 2 + 1;
+    const rightChildNodeIdx = leftChildNodeIdx + 1;
+    let swap: number | null = null;
+    if (leftChildNodeIdx < len) {
+      const leftChildNode = this.values[leftChildNodeIdx];
+      if (leftChildNode.priority < bubbledNode.priority)
+        swap = leftChildNodeIdx;
+    }
+    if (rightChildNodeIdx < len) {
+      const rightChildNode = this.values[rightChildNodeIdx];
+      if (
+        (!swap && rightChildNode.priority < bubbledNode.priority) ||
+        (swap && rightChildNode.priority < this.values[swap].priority)
+      )
+        swap = rightChildNodeIdx;
+    }
+    if (swap) {
+      /**
+       * if we do have swap (not falsy) => swap the bubbled node with the node in
+       * the swap index
+       */
+      this.values[currIndex] = this.values[swap];
+      this.values[swap] = bubbledNode;
+      /**
+       * invoke the sinkDownRecursively recursively with the param is the new swap index
+       */
+      this.sinkDownRecursively(swap);
     }
   }
 }
