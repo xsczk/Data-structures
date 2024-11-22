@@ -37,6 +37,22 @@ class Graph {
     }
     this.adjacencyList.delete(v);
   }
+
+  depthFirstRecursive(start: string) {
+    const result: string[] = [];
+    const visited: Map<string, boolean> = new Map();
+
+    (function dfs(vertex: string) {
+      if (!vertex) return null;
+      visited.set(vertex, true);
+      result.push(vertex);
+      const neighbors: string[] = this.adjacencyList.get(vertex);
+      neighbors.forEach((neighbor) => {
+        if (!visited.has(neighbor)) return dfs.bind(this)(neighbor);
+      });
+    }).bind(this)(start);
+    return result;
+  }
 }
 
 const graph = new Graph();
@@ -56,7 +72,21 @@ graph.addEdge('Los Angeles', 'Da Nang');
 graph.addEdge('London', 'Da Nang');
 graph.addEdge('London', 'Ho Chi Minh');
 graph.addEdge('New York', 'Da Nang');
-console.log(graph);
-
 graph.removeVertex('Hanoi');
-console.log(graph);
+
+const g = new Graph();
+g.addVertex('A');
+g.addVertex('B');
+g.addVertex('C');
+g.addVertex('D');
+g.addVertex('E');
+g.addVertex('F');
+g.addEdge('A', 'B');
+g.addEdge('A', 'C');
+g.addEdge('B', 'D');
+g.addEdge('C', 'E');
+g.addEdge('D', 'E');
+g.addEdge('D', 'F');
+g.addEdge('E', 'F');
+
+console.log(g.depthFirstRecursive('A'));
