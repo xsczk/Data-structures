@@ -58,11 +58,12 @@ class Graph {
     const result: string[] = [];
     const stack: string[] = [start];
     const visited: Map<string, boolean> = new Map();
+    let currVertex: string;
     visited.set(start, true);
     while (stack.length) {
-      const vertex = stack.pop();
-      result.push(vertex);
-      const neighbors = this.adjacencyList.get(vertex);
+      currVertex = stack.pop();
+      result.push(currVertex);
+      const neighbors = this.adjacencyList.get(currVertex);
       neighbors.forEach((neighbor) => {
         if (!visited.has(neighbor)) {
           visited.set(neighbor, true);
@@ -72,7 +73,56 @@ class Graph {
     }
     return result;
   }
+
+  breadthFirst(start: string) {
+    const result: string[] = [];
+    const visited: Map<string, boolean> = new Map();
+    const queue: string[] = [start];
+    let currVertex: string;
+    visited.set(start, true);
+    while (queue.length) {
+      currVertex = queue.shift();
+      result.push(currVertex);
+      const neighbors = this.adjacencyList.get(currVertex);
+      neighbors.forEach((neighbor) => {
+        if (!visited.has(neighbor)) {
+          visited.set(neighbor, true);
+          queue.push(neighbor);
+        }
+      });
+    }
+    return result;
+  }
 }
+
+/**
+ *              A
+ *            /   \
+ *           B     C
+ *           |     |
+ *           D --- E
+ *            \   /
+ *              F
+ */
+
+const g = new Graph();
+g.addVertex('A');
+g.addVertex('B');
+g.addVertex('C');
+g.addVertex('D');
+g.addVertex('E');
+g.addVertex('F');
+g.addEdge('A', 'B');
+g.addEdge('A', 'C');
+g.addEdge('B', 'D');
+g.addEdge('C', 'E');
+g.addEdge('D', 'E');
+g.addEdge('D', 'F');
+g.addEdge('E', 'F');
+
+// console.log(g.depthFirstRecursive('A'));
+// console.log(g.depthFirstIterative('A'));
+console.log(g.breadthFirst('A'));
 
 const graph = new Graph();
 graph.addVertex('Hanoi');
@@ -92,21 +142,3 @@ graph.addEdge('London', 'Da Nang');
 graph.addEdge('London', 'Ho Chi Minh');
 graph.addEdge('New York', 'Da Nang');
 graph.removeVertex('Hanoi');
-
-const g = new Graph();
-g.addVertex('A');
-g.addVertex('B');
-g.addVertex('C');
-g.addVertex('D');
-g.addVertex('E');
-g.addVertex('F');
-g.addEdge('A', 'B');
-g.addEdge('A', 'C');
-g.addEdge('B', 'D');
-g.addEdge('C', 'E');
-g.addEdge('D', 'E');
-g.addEdge('D', 'F');
-g.addEdge('E', 'F');
-
-console.log(g.depthFirstRecursive('A'));
-console.log(g.depthFirstIterative('A'));
