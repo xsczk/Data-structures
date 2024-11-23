@@ -1,6 +1,6 @@
 class Graph {
   /**
-   * Using adjacency list and hash map data structure to build a graph
+   * Using `adjacency list` and `hash map` data structure to build a graph
    */
   adjacencyList: Map<string, string[]>;
 
@@ -53,6 +53,25 @@ class Graph {
     }).bind(this)(start);
     return result;
   }
+
+  depthFirstIterative(start: string) {
+    const result: string[] = [];
+    const stack: string[] = [start];
+    const visited: Map<string, boolean> = new Map();
+    visited.set(start, true);
+    while (stack.length) {
+      const vertex = stack.pop();
+      result.push(vertex);
+      const neighbors = this.adjacencyList.get(vertex);
+      neighbors.forEach((neighbor) => {
+        if (!visited.has(neighbor)) {
+          visited.set(neighbor, true);
+          stack.push(neighbor);
+        }
+      });
+    }
+    return result;
+  }
 }
 
 const graph = new Graph();
@@ -90,3 +109,4 @@ g.addEdge('D', 'F');
 g.addEdge('E', 'F');
 
 console.log(g.depthFirstRecursive('A'));
+console.log(g.depthFirstIterative('A'));
