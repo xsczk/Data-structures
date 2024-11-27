@@ -43,13 +43,14 @@ class WeightedGraph {
    *
    * @param start the starting point
    * @param finish the end point
-   * @return an `array` that contain every points which expected to be the
+   * @return an `array` that contains every point which is expected to be the
    * shortest way to get from `start` to `finish`
    */
   DijkstraShortestPath(start: string, finish: string) {
     const nodes = new PriorityQueue();
     const distances = new Map<string, number>();
     const previous = new Map<string, string>();
+    let path: string[] = [];
     let smallest: Pick<PriorityNode, 'value'>['value'];
 
     /**
@@ -71,9 +72,33 @@ class WeightedGraph {
     while (nodes.values.length) {
       smallest = nodes.dequeue().value;
       if (smallest === finish) {
-        //   Done => return the shortest path here!
+        //   Done => build the shortest path here!
+        while (previous.get(smallest)) {
+          path.push(smallest);
+          smallest = previous.get(smallest);
+        }
+        break;
+      }
+      if (smallest || distances.get(smallest) !== Infinity) {
+        const neighbors = this.adjacencyList.get(smallest);
+        for (const neighbor of neighbors) {
+          const { node, weight } = neighbor;
+          /**
+           *  Calculate new distance to neighboring node
+           */
+          let candidate = distances.get(smallest) + weight;
+          if (candidate < distances.get(node)) {
+            // Updating new smallest distance to neighbor
+            distances.set(node, candidate);
+            // Updating previous - How we got to neighbor which is the shortest way
+            previous.set(node, smallest);
+            // Enqueue in priority queue with the new priority
+            nodes.enqueue(node, candidate);
+          }
+        }
       }
     }
+    return path.concat(smallest).reverse();
   }
 }
 
@@ -94,4 +119,4 @@ graph.addEdge('D', 'E', 3);
 graph.addEdge('D', 'F', 1);
 graph.addEdge('E', 'F', 1);
 
-graph.DijkstraShortestPath('A', 'E');
+console.log(graph.DijkstraShortestPath('A', 'E'));
