@@ -3,18 +3,18 @@
  * write a function called countZeroes,
  * which returns the number of zeroes in the array.
  *
+ * @example
  * countZeroes([1,1,1,1,0,0]) // 2
  * countZeroes([1,0,0,0,0]) // 4
  * countZeroes([0,0,0]) // 3
  * countZeroes([1,1,1,1]) // 0
  * Time Complexity - O(log n)
- */
-
-/**
- * Using binary search
+ *
  * @param arr input array
  * @return number of zeroes in the input `arr`
  */
+
+// Using binary search approach
 function countZeroes(arr: number[]): number {
   let left = 0,
     right = arr.length - 1;
