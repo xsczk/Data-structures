@@ -21,25 +21,17 @@
 function constructNote(message: string, letters: string): boolean {
    if (message.trim() === '') return true
    const map = new Map<string, number>()
-   for (const char of message) {
-      if (map.has(char)) {
-         const currVal = map.get(char);
-         map.set(char, currVal + 1);
-      } else {
-         map.set(char, 1)
-      }
-   }
    for (const letter of letters) {
-      if (!map.has(letter)) continue;
-      const currVal = map.get(letter);
-      map.set(letter, currVal - 1);
-      if (map.get(letter) === 0) map.delete(letter);
-      if (!map.size) return true
+      map.set(letter, (map.get(letter) || 0) + 1);
    }
-   return false
+   for (const char of message) {
+      if (map.has(char) && map.get(char) > 0) map.set(char, map.get(char) - 1);
+      else return false
+   }
+   return true
 }
 
 console.log(constructNote('aa', 'abc')) // false
 console.log(constructNote('abc', 'dcba')) // true
 console.log(constructNote('aabbcc', 'ebfavfkbcabcaddff')) // true
-console.log(constructNote('', 'abc')) // false
+console.log(constructNote('', 'abc')) // true
