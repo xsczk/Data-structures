@@ -82,6 +82,43 @@ class Trie {
     /** The word does not end at a valid `char` node */
     return undefined;
   }
+
+  /**
+   * Write a function on the Trie.prototype called getWords
+   * which returns an array of all of the words in the Trie.
+   *
+   * @example
+   * var t = new Trie();
+   * t.addWord('fun')
+   * t.addWord('fast')
+   * t.addWord('fat')
+   * t.addWord('fate')
+   * t.addWord('father')
+   * t.addWord('forget')
+   * t.addWord('awesome')
+   * t.addWord('argue')
+   *
+   * t.getWords() // ["fun", "fast", "fat", "fate", "father", "forget", "awesome", "argue"]
+   * t.getWords().length // 8
+   *
+   * @return an array of all the words in the Trie
+   */
+  getWords(prefix = '', currNode = this): string[] {
+    let words: string[] = [];
+
+    /** If the current node is the end of a word, add the prefix to the words array */
+    if (currNode.isWord) words.push(prefix);
+
+    /** Traverse each child of current node */
+    for (const char in currNode.characters) {
+      if (currNode.characters.hasOwnProperty(char)) {
+        words = words.concat(
+          currNode.characters[char].getWords(`${prefix}${char}`),
+        );
+      }
+    }
+    return words;
+  }
 }
 
 const firstTrie = new Trie();
@@ -97,7 +134,29 @@ t.addWord('fat');
 t.addWord('fate');
 t.addWord('father');
 
-console.log(t.findWord('taco')); // undefined
-console.log(t.findWord('fat').characters); // {t: Trie}
-console.log(t.findWord('father').characters); // {}
-t.findWord('father').isWord; // true
+const ex = {
+  characters: {
+    f: {
+      characters: {
+        u: {
+          characters: {
+            n: {
+              characters: {},
+              isWord: true,
+            },
+          },
+          isWord: false,
+        },
+      },
+      isWord: false,
+    },
+  },
+  isWord: false,
+};
+
+// console.log(t.findWord('taco')); // undefined
+// console.log(t.findWord('fat').characters); // {t: Trie}
+// console.log(t.findWord('father').characters); // {}
+// console.log(t.findWord('father').isWord) // true
+
+console.log(t.getWords());
