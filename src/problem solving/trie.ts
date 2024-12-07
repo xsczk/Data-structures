@@ -103,7 +103,7 @@ class Trie {
    *
    * @return an array of all the words in the Trie
    */
-  getWords(prefix = '', currNode = this): string[] {
+  getWords(prefix = '', currNode: Trie = this): string[] {
     let words: string[] = [];
 
     /** If the current node is the end of a word, add the prefix to the words array */
@@ -119,6 +119,63 @@ class Trie {
     }
     return words;
   }
+
+  getWordsAnotherApproach(words: string[] = [], prefix = '') {
+    if (this.isWord) words.push(prefix);
+    for (const char in this.characters) {
+      if (this.characters.hasOwnProperty(char)) {
+        this.characters[char].getWordsAnotherApproach(
+          words,
+          `${prefix}${char}`,
+        );
+      }
+    }
+    return words;
+  }
+
+  /**
+   * Write a function on the Trie class named autoComplete
+   * which accepts a string and returns an array
+   * of all the possible options in the Trie for that string.
+   *
+   * @example
+   * var t = new Trie();
+   * t.addWord('fun')
+   * t.addWord('fast')
+   * t.addWord('fat')
+   * t.addWord('fate')
+   * t.addWord('father')
+   * t.addWord('forget')
+   * t.addWord('awesome')
+   * t.addWord('argue')
+   *
+   * t.autoComplete('fa') // ["fast","fat", "fate", "father"]
+   * t.autoComplete('a') // ["awesome", "argue"]
+   * t.autoComplete('arz') // []
+   */
+  autoComplete(prefix: string): string[] {
+    let currNode: Trie = this;
+    let char: string;
+    for (let i = 0; i < prefix.length; i++) {
+      char = prefix[i];
+      if (!currNode.characters?.[char]) return [];
+      currNode = currNode.characters[char];
+    }
+    /** Using getWords method to resolve this with prefix is the input `str`,
+     * and currNode is the starting node to traverse from Trie */
+    return this.getWords(prefix, currNode);
+  }
+
+  autoCompleteAnotherApproach(prefix: string): string[] {
+    let currNode: Trie = this;
+    let char: string;
+    for (let i = 0; i < prefix.length; i++) {
+      char = prefix[i];
+      if (!currNode.characters?.[char]) return [];
+      currNode = currNode.characters[char];
+    }
+    return currNode.getWordsAnotherApproach([], prefix);
+  }
 }
 
 const firstTrie = new Trie();
@@ -133,6 +190,9 @@ t.addWord('fast');
 t.addWord('fat');
 t.addWord('fate');
 t.addWord('father');
+t.addWord('forget');
+t.addWord('awesome');
+t.addWord('argue');
 
 const ex = {
   characters: {
@@ -159,4 +219,5 @@ const ex = {
 // console.log(t.findWord('father').characters); // {}
 // console.log(t.findWord('father').isWord) // true
 
-console.log(t.getWords());
+console.log(t.getWordsAnotherApproach());
+console.log(t.autoCompleteAnotherApproach('fa'));
