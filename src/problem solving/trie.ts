@@ -176,6 +176,66 @@ class Trie {
     }
     return currNode.getWordsAnotherApproach([], prefix);
   }
+
+  /**
+   * Write a function called removeWord which accepts a string
+   * and removes the word from the Trie.
+   * addWord is implemented to help you test the function.
+   *
+   * @example
+   * var t = new Trie();
+   * t.addWord('fun')
+   * t.addWord('fast')
+   * t.addWord('fat')
+   * t.addWord('fate')
+   * t.addWord('father')
+   * t.addWord('forget')
+   * t.addWord('awesome')
+   * t.addWord('argue')
+   *
+   *
+   * t.removeWord('fat')
+   * t.characters.f.characters.a.characters.t.isWord // false
+   * t.characters.f.characters.a.characters.t.characters.e.isWord // true
+   *
+   * t.removeWord('argue')
+   *
+   * t.characters.a.characters.r // undefined
+   */
+  removeWord(word: string) {
+    this._removeWord(word, 0);
+  }
+
+  private _removeWord(word: string, index = 0) {
+    if (word.length === 0) return false;
+    if (word.length === index) {
+      /** If we reach the end of the word, mark it as not a word */
+      if (!this.isWord) return false;
+      this.isWord = false;
+      /** We can delete this character (node) if it does not have any child */
+      return Object.keys(this.characters).length === 0;
+    }
+    const char = word[index];
+    const nextNode: Trie = this.characters[char];
+    if (!nextNode) return false;
+    const shouldDelNode = nextNode._removeWord(word, index + 1);
+    if (shouldDelNode) {
+      delete this.characters[char];
+      /**
+       * the currentNode deleted so we check if the previous node
+       * now does not have any child either AND it is NOT a word
+       * (this prevents from deleting another valid word)
+       * we can delete it safety
+       */
+      return Object.keys(this.characters).length === 0 && !this.isWord;
+    }
+    /**
+     * If we cannot delete the currentNode, so does the previousNode
+     * because if we return true here,
+     * it will run into delete statement in the previous recursion
+     */
+    return false;
+  }
 }
 
 const firstTrie = new Trie();
@@ -193,6 +253,7 @@ t.addWord('father');
 t.addWord('forget');
 t.addWord('awesome');
 t.addWord('argue');
+t.addWord('ar');
 
 const ex = {
   characters: {
@@ -202,6 +263,29 @@ const ex = {
           characters: {
             n: {
               characters: {},
+              isWord: true,
+            },
+          },
+          isWord: false,
+        },
+        a: {
+          characters: {
+            s: {
+              characters: {
+                t: {
+                  characters: {},
+                  isWord: true,
+                },
+              },
+              isWord: false,
+            },
+            t: {
+              characters: {
+                e: {
+                  characters: {},
+                  isWord: true,
+                },
+              },
               isWord: true,
             },
           },
@@ -219,5 +303,9 @@ const ex = {
 // console.log(t.findWord('father').characters); // {}
 // console.log(t.findWord('father').isWord) // true
 
-console.log(t.getWordsAnotherApproach());
-console.log(t.autoCompleteAnotherApproach('fa'));
+// console.log(t.getWordsAnotherApproach());
+// console.log(t.autoCompleteAnotherApproach('fa'));
+
+console.log(t.characters.a.characters.r);
+t.removeWord('argue');
+console.log(t.characters.a.characters.r);
