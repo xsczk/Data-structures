@@ -8,6 +8,10 @@ function isValidChar(char: string) {
  * if the second string is an anagram of the first.
  * An anagram is a word, phrase or name formed by
  * rearranging the letters of another, such as cinema, formed from iceman
+ * @example
+ * validAnagrams('cinema', 'iceman') // true
+ * validAnagrams('', '') // true
+ * validAnagrams('school', 'look') // false
  */
 function validAnagrams(str1: string, str2: string): boolean {
   if (str1.length !== str2.length) return false;
@@ -28,4 +32,4 @@ function validAnagrams(str1: string, str2: string): boolean {
   return true;
 }
 
-console.log(validAnagrams('cinema', 'iceman'));
+console.log(validAnagrams('abcdefghijk', 'acdeibgkjhf'));
