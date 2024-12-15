@@ -8,11 +8,12 @@
 function capitalizeFirst(strings: string[]): string[] {
   const result: string[] = [];
   if (strings.length === 0) return result;
+  const lastIndex = strings.length - 1;
   const capitalizedStr =
-    strings[0].charAt(0).toUpperCase() + strings[0].slice(1);
+    strings[lastIndex].charAt(0).toUpperCase() + strings[lastIndex].slice(1);
   result.push(capitalizedStr);
-  strings.shift();
-  return result.concat(capitalizeFirst(strings));
+  strings.pop();
+  return capitalizeFirst(strings).concat(result);
 }
 
 console.log(capitalizeFirst(['car', 'taco', 'banana']));
